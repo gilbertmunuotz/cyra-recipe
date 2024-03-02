@@ -1,44 +1,36 @@
 import React, { useState } from 'react';
 import { FaBars } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-import LandingPG from '../Images/Landing PG (1).jpg';
 
 function Navbar() {
-    const [nav, setNav] = useState(true);
+
+    const [nav, setNav] = useState(false)
 
     function handleNav() {
-        setNav(!nav);
+        setNav(!nav)
     }
 
     return (
-        <div className='Navbar'>
-            <div className="bg-current">
-                <div className="flex justify-between items-center h-16 mx-auto px-4 text-white">
-                    <h1 className='w-full text-3xl font-bold text-orange-500 m-6'>Welcome</h1>
-                    <ul className='hidden md:flex'>
-                        <Link className='p-4'>Home</Link>
-                        <Link className='p-4'>Login</Link>
-                    </ul>
-                    <div className="block md:hidden" onClick={handleNav}>
-                        {!nav ? <FaTimes size={20} /> : <FaBars size={20} />}
-                    </div>
-                </div>
-            </div>
-            <div className={!nav ? 'fixed top-1/4 left-1/3 z-50' : 'hidden'}> {/* Add z-index */}
-                <ul className='uppercase text-white font-bold'>
-                    <Link className='p-4'>Home</Link>
-                    <Link className='p-4'>Login</Link>
+        <div className='Navbar fixed w-full'>
+            <div className="flex w-full justify-between items-center h-20 px-4 absolute backdrop-blur-md">
+                <div className="text-3xl text-orange-500">Welcome</div>
+                {/*NavBar By Default */}
+                <ul className='hidden md:flex text-white'>
+                    <button className='bg-orange-500 rounded-full px-5 py-2 m-10'>Login</button>
                 </ul>
-            </div>
-            <section className="background-image">
-                <div className="img-container relative">
-                    <img src={LandingPG} alt="landing page" className="bg-cover w-full h-[80vh]" />
-                    <h2 className="text-overlay md:text-2xl absolute left-1/2 -translate-x-1/2 -translate-y-1/2 text-orange-500 cursor-pointer sm:text-xs top-96 xl:top-3/4 lg:top-96 md:top-80">
-                        Tacco | Cake | Pastry | Burger | Pizza
-                    </h2>
+
+                <div className="md:hidden z-10 text-white" onClick={handleNav}>
+                    {nav ? <FaTimes size={20} className='text-black' /> : <FaBars size={20} />}
                 </div>
-            </section>
+
+                {/*NavBar in sm Screens only */}
+                <div className={`absolute top-0 left-0 w-full backdrop-blur-sm py-32 flex flex-row text-center transition duration-300 ${nav ? "" : "left-[-100%]"}`} onClick={handleNav}>
+                    <ul className="mx-auto text-orange-500 uppercase w-full p-4">
+                        <li className='border-b-2'>Login</li>
+                    </ul>
+                </div>
+
+            </div>
         </div>
     );
 }
