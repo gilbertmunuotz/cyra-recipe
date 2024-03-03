@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Body from './components/Body'; // Assuming Body is required
 import Footer from './components/Footer';
+import MenuList from './components/MenuList';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Navbar />
         <Home />
         <Body />
+        <MenuList />
         <Footer />
       </BrowserRouter>
     </div>
