@@ -27,7 +27,7 @@ function Navbar() {
 
                 {/* NavBar in sm Screens only */}
                 <div className={`md:hidden absolute top-0 left-0 w-full backdrop-blur-sm py-32 flex flex-row text-center transition duration-300 ${nav ? "" : "translate-x-full"}`}>
-                    <ul className="mx-auto text-orange-500 uppercase w-full p-4">
+                    <ul className="mx-auto text-white uppercase w-full p-4">
                         <li className='border-b-2'>Login</li>
                     </ul>
                 </div>
