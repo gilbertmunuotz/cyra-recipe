@@ -1,6 +1,6 @@
 import React from 'react';
-import Hamburger from '../Images/HamBurger.jpg'
 import Tamales from '../Images/Tamales.jpg'
+import Hamburger from '../Images/HamBurger.jpg'
 import IndianRoti from '../Images/Indian roti-composition.jpg'
 
 function MenuList() {
