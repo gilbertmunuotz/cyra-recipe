@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
-import { FaBars } from "react-icons/fa";
-import { FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 function Navbar() {
+    const [navOpen, setNavOpen] = useState(false);
 
-    const [nav, setNav] = useState(false)
-
-    function handleNav() {
-        setNav(!nav)
-    }
+    const handleNav = () => {
+        setNavOpen(prevNavOpen => !prevNavOpen);
+    };
 
     return (
-        <div className='Navbar fixed w-full'>
-            <div className="flex w-full justify-between items-center h-16 px-4 absolute backdrop-blur-md">
+        <div className='Navbar fixed top-0 w-full z-10'>
+            <div className="flex justify-between items-center h-16 px-4 backdrop-blur-md">
                 <div className="text-3xl text-orange-500">Welcome</div>
 
                 {/* NavBar By Default */}
@@ -20,16 +18,15 @@ function Navbar() {
                     <button className='bg-orange-500 rounded-full px-5 py-2 m-10'>Login</button>
                 </ul>
 
-                {/* FaBars icon for mobile */}
-                <div className="md:hidden z-20 text-white" onClick={handleNav}>
-                    {nav ? <FaTimes size={20} className='text-orange-500' /> : <FaBars size={20} className='text-orange-500' />}
+                <div className="md:hidden text-white" onClick={handleNav}>
+                    {navOpen ? <FaTimes size={20} className='text-orange-500' /> : <FaBars size={20} className='text-orange-500' />}
                 </div>
+            </div>
 
-                {/* NavBar in sm Screens only */}
-                <div className={`md:hidden absolute top-0 left-0 w-full backdrop-blur-sm py-32 flex flex-row text-center transition duration-300 ${nav ? "" : "translate-x-full"}`}>
-                    <ul className="mx-auto text-white uppercase w-full p-4">
-                        <li className='border-b-2'>Login</li>
-                    </ul>
+            {/* Mobile Navigation Menu */}
+            <div className={`md:hidden fixed top-16 left-0 w-full h-full bg-black bg-opacity-75 z-50 transition-opacity ${navOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} onClick={handleNav}>
+                <div className="flex flex-col justify-center items-center h-full">
+                    <button className='text-white rounded-md bg-orange-500 py-2 px-4'>Login</button>
                 </div>
             </div>
         </div>

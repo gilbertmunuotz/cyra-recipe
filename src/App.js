@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import Body from './components/Body';
 import Home from './components/Home';
-import Body from './components/Body'; // Assuming Body is required
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import MenuList from './components/MenuList';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   return (
