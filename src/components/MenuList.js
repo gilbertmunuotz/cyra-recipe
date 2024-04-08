@@ -48,7 +48,7 @@ function MenuList() {
                 </form>
 
                 {searched && ( // Render recipes only if search has been performed
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-8 mt-10 cursor-pointer">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-12 mt-10 cursor-pointer">
                         {recipes.map(recipe => (
                             <div key={recipe.id} className='bg-orange-400'>
                                 {recipe.image && (
