@@ -1,21 +1,18 @@
 import React from 'react';
-import Body from './components/Body';
-import Home from './components/Home';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import MenuList from './components/MenuList';
-import { BrowserRouter } from 'react-router-dom';
+import Index from "./components/Index";
+import Login from "./components/Login";
+import NotFound from "./components/NotFound";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+const router = createBrowserRouter([
+  { path: "/", element: <Index />, errorElement: <NotFound /> },
+  { path: "/Login", element: <Login />, errorElement: <NotFound /> },
+])
 
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Navbar />
-        <Home />
-        <Body />
-        <MenuList />
-        <Footer />
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </div>
   );
 }
