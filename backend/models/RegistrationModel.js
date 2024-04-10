@@ -6,7 +6,6 @@ const registrationSchema = new mongoose.Schema({
     UserName: String,
     email: String,
     password: String,
-    confirmPassword: String,
 }, { timestamps: true });
 
 //Collection Name starts, Schema follows

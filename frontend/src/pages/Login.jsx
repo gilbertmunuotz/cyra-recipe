@@ -1,32 +1,35 @@
 import { Link } from "react-router-dom";
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from 'react-toastify';
+import { login, reset } from "../slices/LoginSlice"; // Import necessary actions
 import { FormHookYup, userSchema } from "../userschema/UserSchema";
-import { loginPending, loginSuccess, loginFail } from '../slices/LoginSlice';
 
 function Form() {
 
     const { register, handleSubmit, formState: { errors } } = FormHookYup(userSchema);
 
+
+    // Get state from Redux store
+    const { isLoading, isError, isSuccess, message } = useSelector((state) => state.login);
+
     const [UserName, setUserName] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setconfirmPassword] = useState('');
 
     const userNameRef = useRef(null);
     const passwordRef = useRef(null);
-    const confirmPasswordRef = useRef(null);
 
+    const navigate = useNavigate()
     const dispatch = useDispatch();
 
-    const onSubmit = async (event) => {
-        event.preventDefault();
-        dispatch(loginPending()); // Dispatch before API calls
+    const onSubmit = async () => {
+        const userData = { UserName, password }
 
-        const userData = { UserName, password, confirmPassword }
+        dispatch(login(userData)); // Dispatch login action
 
-        const url = 'http://localhost:3000/api/login';
+        const url = 'http://localhost:3000/api/send/login';
 
         try {
             const response = await fetch(url, {
@@ -40,18 +43,22 @@ function Form() {
                 toast.error(error.message); // Display error toast
                 return; // Exit if not successful
             }
+
             const responseData = await response.json();
-            dispatch(loginSuccess(responseData)); // Dispatch success with data
+            dispatch(login(responseData)); // Dispatch success with data
             toast.success('Login Successful!'); // Display success toast
+            navigate("/home")
 
             // Clear form fields (optional)
             userNameRef.current.value = '';
             passwordRef.current.value = '';
-            confirmPasswordRef.current.value = '';
+
+            // Optionally clear form and reset Redux state
+            dispatch(reset());
 
         } catch (error) {
             console.error('Error sending data:', error);
-            dispatch(loginFail(error.message)); // Dispatch error message
+            dispatch(loginError(error.message)); // Dispatch error message
             toast.error('An error occurred. Please try again later.'); // Display error toast
         }
     };
@@ -101,34 +108,15 @@ function Form() {
                         </div>
                     </div>
 
-
-                    <div className="confirm_password text-center mt-4">
-                        <label className="block text-xl font-medium leading-6 text-gray-900 mb-2">Confirm Password</label>
-                        <div className="flex justify-center">
-                            <div className="rounded-md shadow-sm sm:max-w-md">
-                                <input
-                                    type="password"
-                                    id="confirmPassword"
-                                    value={confirmPassword}
-                                    ref={confirmPasswordRef}
-                                    {...register("confirmPassword")}
-                                    onChange={(e) => setconfirmPassword(e.target.value)}
-                                    placeholder="Confirm Password Here...."
-                                    className="block bg-transparent py-1 pl-1 px-16 border sm:text-sm sm:leading-6"
-                                />
-                                <p className="text-red-600 text-sm">{errors.confirmPassword?.message}</p>
-                            </div>
-                        </div>
-                    </div>
-
-
                     <div className="buttons flex items-center justify-center mt-8 space-x-8">
-                        <button className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:shadow-outline" type="submit">
-                            Log In
-                        </button>
+                        <Link to={"/home"}>
+                            <button className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:shadow-outline" disabled={isLoading} type="submit">
+                                {isLoading ? 'Loading...' : 'Log In'}
+                            </button>
+                        </Link>
 
                         <Link to={"/register"}>
-                            <button className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:shadow-outline" type="submit">
+                            <button className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:shadow-outline" disabled={isLoading} type="submit">
                                 Register
                             </button>
                         </Link>

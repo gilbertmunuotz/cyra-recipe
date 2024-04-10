@@ -1,28 +1,63 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import authService from "./RegServices";
+
+//Get user from localStorage
+const user = JSON.parse(localStorage.getItem('user'))
 
 const initialState = {
+    user: user ? user : null,
+    isError: false,
+    isSuccess: false,
     isLoading: false,
-    error: ''
-}
+    message: '',
+};
+
+const register = createAsyncThunk(
+    'http://localhost:4000/api/send/register', // Replace with your register endpoint
+    async (userData, thunkAPI) => {
+        try {
+            const response = await authService.register(userData);
+            return response.data; // Assuming successful response returns user data
+        } catch (error) {
+            // Handle errors appropriately
+            const message =
+                (error.response && error.response.data && error.response.data.message) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
 const registerSlice = createSlice({
-    name: 'register',
+    name: "register",
     initialState,
     reducers: {
-        registerPending(state, action) {
-            state.isLoading = true;
+        reset: (state) => {
+            state.isLoading = false
+            state.isSuccess = false
+            state.isError = false
+            state.message = ''
         },
-        registerSuccess(state, action) {
-            state.isLoading = false;
-            state.error = '';
-        },
-        registrationCompleted(state, action) {
-            // Optional: Update state if needed after successful registration (e.g., show success message)
-        },
-        registerFail(state, action) {
-            state.isLoading = false;
-            state.error = action.payload;
-        },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(register.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(register.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.user = action.payload
+            })
+            .addCase(register.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+                state.user = null
+            })
     }
 });
-export const { registerPending, registerSuccess, registerFail, registrationCompleted } = registerSlice.actions;
+
+export const { reset } = registerSlice.actions;
 export default registerSlice.reducer;
