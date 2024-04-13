@@ -1,19 +1,12 @@
+import { toast } from 'react-toastify';
 import { Link } from "react-router-dom";
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch, useSelector } from "react-redux";
-import { toast, ToastContainer } from 'react-toastify';
-import { register, reset } from "../slices/RegisterSlice"; // Import necessary actions
 import { FormHookYup, userSchema } from "../userschema/UserSchema";
 
 function Register() {
 
     // React Hook Form Handling & Yup Validation
     const { register, handleSubmit, formState: { errors } } = FormHookYup(userSchema);
-
-    // Get state from Redux store.
-    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.register);
 
     const [UserName, setUserName] = useState('');
     const [email, setEmail] = useState('');
@@ -26,16 +19,10 @@ function Register() {
     const passwordRef = useRef(null);
     const confirmPasswordRef = useRef(null);
 
-    const navigate = useNavigate()
-    const dispatch = useDispatch();
-
     const onSubmit = async () => {
-
-        const userData = { UserName, email, password, confirmPassword }
-
-        dispatch(register(userData));
-
         const url = 'http://localhost:3000/api/send/register';
+
+        const userData = { UserName, email, password, confirmPassword };
 
         try {
             const response = await fetch(url, {
@@ -43,17 +30,16 @@ function Register() {
                 body: JSON.stringify(userData),
             });
 
+
             if (!response.ok) {
-                const error = await response.json();
-                dispatch(register.rejected(error.message)); // Dispatch error message
-                toast.error(error.message); // Display error toast
+                const errorText = await response.text();
+                console.error('Error Occurred:', errorText);
+                toast('An error occurred. Please try again later.'); // Display generic error toast
                 return; // Exit if not successful
             }
 
-            const responseData = await response.json();
-            dispatch(register(responseData));// Dispatch success with data
-            toast.success('Registration Successful!'); // Display success toast
-            navigate("/login")
+            // Display success toast
+            toast.success('Registration Successful!');
 
             // Clear form fields (optional)
             userNameRef.current.value = '';
@@ -61,13 +47,9 @@ function Register() {
             passwordRef.current.value = '';
             confirmPasswordRef.current.value = '';
 
-            // Optionally clear form and reset Redux state
-            dispatch(reset());;
-
         } catch (error) {
             console.error('Error sending data:', error);
-            dispatch(register.rejected(error.message));// Dispatch error message
-            toast.error('An error occurred. Please try again later.'); // Display error toast
+            toast('An error occurred. Please try again later.'); // Display error toast
         }
     };
 
@@ -86,7 +68,7 @@ function Register() {
                                     <input
                                         type="text"
                                         id="UserName"
-                                        value={UserName}
+                                        name={UserName}
                                         ref={userNameRef}
                                         {...register("UserName")}
                                         placeholder="Enter Username Here...."
@@ -106,7 +88,7 @@ function Register() {
                                     <input
                                         type="email"
                                         id="email"
-                                        value={email}
+                                        name={email}
                                         ref={emailRef}
                                         {...register("email")}
                                         placeholder="Enter Email Here...."
@@ -160,27 +142,15 @@ function Register() {
 
 
                         <div className="flex items-center justify-center mt-8 space-x-8">
-                            <button className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:shadow-outline" disabled={isLoading} type="submit">
-                                {isLoading ? 'Loading...' : 'Register'}
+                            <button className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:shadow-outline" type="submit">
+                                Register
                             </button>
                             <Link to={'/login'}>
-                                <button className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:shadow-outline" disabled={isLoading} type="submit">
+                                <button className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:shadow-outline" type="submit">
                                     Log In
                                 </button>
                             </Link>
                         </div>
-                        <ToastContainer
-                            position="top-right"
-                            autoClose={5000}
-                            hideProgressBar={false}
-                            newestOnTop={false}
-                            closeOnClick
-                            rtl={false}
-                            pauseOnFocusLoss
-                            draggable
-                            pauseOnHover
-                            theme="dark"
-                        />
                     </form>
                 </div>
             </div >

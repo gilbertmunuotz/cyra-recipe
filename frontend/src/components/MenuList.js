@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 function MenuList() {
     const [recipes, setRecipes] = useState([]);
@@ -24,9 +25,12 @@ function MenuList() {
                 setSearched(true); // Set searched to true after fetching data
             } else {
                 console.error('Invalid data format:', data);
+                toast.error("Invalid Input", Error)
             }
         } catch (error) {
-            console.error('Error Fetching Data', error);
+            console.error('Error Fetching Data', Error);
+            toast("Error Occured", error)
+
         }
     };
 

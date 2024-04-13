@@ -5,7 +5,6 @@ var mongoose = require('mongoose');
 var port = process.env.PORT || 4000;
 var bodyParser = require('body-parser');
 var userRoutes = require('./routes/userRoutes');
-
 require('dotenv').config();
 
 async function connectToMongo() {
@@ -21,13 +20,13 @@ connectToMongo();
 // Initiate Express
 var app = express();
 
-// Add your Express middleware, and other logic here
+// Add your Express middleware,and other logic here
+
 app.use(bodyParser.json());
 
 app.use(cors({ origin: 'http://localhost:3000' }));
 
 app.use(userRoutes)
-
 
 app.listen(port, () => {
   console.log(`Server Listening on Port ${port}`);
