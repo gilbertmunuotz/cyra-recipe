@@ -11,7 +11,7 @@ function MenuList() {
         setSearchTerm(event.target.value);
     };
 
-    const API_KEY = process.env.REACT_APP_API_KEY || 'c7341c6dae4c4e00b4434cea23cb522c'
+    const API_KEY = process.env.REACT_APP_API_KEY;
 
     const fetchData = async () => {
 
