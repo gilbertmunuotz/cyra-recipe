@@ -1,9 +1,8 @@
-const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 
 // Schema for both registration and login
 const userSchema = new mongoose.Schema({
-    UserName: String,
+    username: String,
     email: String,
     password: String,
 }, { timestamps: true });
