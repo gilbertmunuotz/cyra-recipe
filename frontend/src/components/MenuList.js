@@ -1,39 +1,40 @@
+import Spinner from "./Spinner";
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { Link } from "react-router-dom";
 
 function MenuList() {
     const [recipes, setRecipes] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [searched, setSearched] = useState(false); // State to track if search has been performed
-
-    const handleForm = (event) => {
-        event.preventDefault();
-        setSearchTerm(event.target.value);
-    };
+    const [isLoading, setIsLoading] = useState(false);
 
     const API_KEY = process.env.REACT_APP_API_KEY;
 
-    const fetchData = async () => {
+    async function handleSubmit(event) {
+        event.preventDefault(); // Prevent default form submission
 
-        const url = `https://api.spoonacular.com/food/menuItems/search?query=${searchTerm}&apiKey=${API_KEY}`;
+        setIsLoading(true);
 
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            if (data && data.menuItems) {
-                setRecipes(data.menuItems);
-                setSearched(true); // Set searched to true after fetching data
-            } else {
-                console.error('Invalid data format:', data);
-                toast.error("Invalid Input", Error)
+        setTimeout(async () => {
+            const url = `https://api.spoonacular.com/recipes/complexSearch?query=${searchTerm}&apiKey=${API_KEY}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data) {
+                    setRecipes(data.results); // Assuming "results" is the array of recipes
+                } else {
+                    console.error('Invalid data format:', data);
+                    toast.error('Invalid Input');
+                }
+            } catch (error) {
+                console.error('Error Fetching Data', error);
+                toast.error('Error Occurred');
+            } finally {
+                setIsLoading(false);
             }
-        } catch (error) {
-            console.error('Error Fetching Data', Error);
-            toast("Error Occured", error)
-
-        }
-    };
-
+        }, 1000);
+    }
 
     return (
         <div className='MenuList'>
@@ -42,29 +43,38 @@ function MenuList() {
                     <h1 className='text-black text-3xl font-semibold text-left ml-6 sm:text-center italic'>Menu List</h1>
                 </div>
 
-                <form className='flex justify-between items-center mx-auto w-full border p-1 rounded-lg text-white bg-black max-w-[700px]'>
+                <form className='flex mt-3 justify-between items-center mx-auto w-full border p-1 rounded-lg text-white bg-black max-w-[700px]' onSubmit={handleSubmit}>
                     <div className="rounded-lg">
-                        <input type="text" className="bg-transparent focus:outline-none" placeholder="Type Something Here" value={searchTerm} onChange={handleForm} />
+                        <input
+                            required
+                            type="text"
+                            value={searchTerm}
+                            placeholder="Type Something Here"
+                            className="bg-transparent focus:outline-none"
+                            onChange={(event) => setSearchTerm(event.target.value)}
+                        />
                     </div>
                     <div className="p-2">
-                        <button type="button" onClick={fetchData} className='bg-orange-500 py-2 px-2 rounded-md'>Search</button>
+                        <button type="submit" className='bg-orange-500 py-2 px-2 rounded-md'>Search</button>
                     </div>
                 </form>
 
-                {searched && ( // Render recipes only if search has been performed
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-12 mt-10 cursor-pointer">
-                        {recipes.map(recipe => (
-                            <div key={recipe.id} className='bg-orange-400'>
-                                {recipe.image && (
-                                    <img src={recipe.image} alt={recipe.title} className='bg-cover h-64 w-full' />
-                                )}
-                                <p className='text-center text-xl'>{recipe.title}</p>
-                                <p className='text-center'> Restaurant Name:{recipe.restaurantChain}</p>
-                                <p className='text-left mx-2'>{recipe.servings.number} servings of {recipe.servings.size} {recipe.servings.unit}</p>
-                            </div>
-                        ))}
-                    </div>
-                )}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-12 mt-10">
+                    {isLoading ? (
+                        <Spinner />
+                    ) : recipes.length === 0 ? (
+                        <p>No recipes found. Try a different search term.</p>
+                    ) : (
+                        recipes.map((recipe) => (
+                            <Link to={`/recipes/${recipe.id}`} key={recipe.id}>
+                                <div className="recipe-item">
+                                    <img src={recipe.image} alt={recipe.title} />
+                                    <p className='text-center text-xl font-bold'>{recipe.title}</p>
+                                </div>
+                            </Link>
+                        ))
+                    )}
+                </div>
             </div>
         </div>
     );
