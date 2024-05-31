@@ -56,7 +56,7 @@ function MenuDetails() {
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2">
-                            <p className="text-center text-3xl font-bold sm:col-span-2 mt-3">{recipe.title}</p>
+                            <p className="text-center text-3xl font-bold sm:col-span-2 mb-3">{recipe.title}</p>
 
                             <div className="alpha">
                                 <h2 className="font-bold text-xl">Ingredients</h2>
