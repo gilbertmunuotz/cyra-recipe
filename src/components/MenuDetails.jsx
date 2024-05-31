@@ -73,7 +73,7 @@ function MenuDetails() {
                                 <h2 className="font-bold text-xl">Procedures</h2>
                                 <ul>
                                     {recipe.analyzedInstructions[0].steps.map((step) => (
-                                        <li key={step.number}> {step.step}</li>
+                                        <li key={step.number}>👉 {step.step}</li>
                                     ))}
                                 </ul>
                             </div>
