@@ -1,5 +1,4 @@
-import React from 'react';
-import Index from "./pages/Index";
+import Index from "./components/Index";
 import NotFound from "./components/NotFound";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';

@@ -22,7 +22,7 @@ function Body() {
           </div>
           <div className="self-center">
             <h1 className='text-center text-4xl'>Karibu Nyumbani!</h1>
-            <p className='p-6'>We're thrilled to welcome you to Grand Melia, your haven for delicious authentic Tanzanian cuisine and warm hospitality in the heart of Arusha. Whether you're a seasoned explorer or a curious newcomer, we invite you to experience the vibrant flavors and rich culinary traditions of Tanzania at our table.</p>
+            <p className='p-6'>We're thrilled to welcome you to Grand Melia, your heaven for delicious authentic Tanzanian Recipes and warm hospitality in the heart of Arusha. Whether you're a seasoned explorer or a curious newcomer, we invite you to experience the vibrant flavors and rich culinary traditions of Tanzania at our table.</p>
           </div>
         </div>
       </div>

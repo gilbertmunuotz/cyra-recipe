@@ -1,6 +1,6 @@
 import Spinner from "./Spinner";
-import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 
 function MenuList() {
@@ -40,7 +40,7 @@ function MenuList() {
         <div className='MenuList'>
             <div className="bg-white my-4 sm:my-8">
                 <div className="text">
-                    <h1 className='text-black text-3xl font-semibold text-left ml-6 sm:text-center italic'>Menu List</h1>
+                    <h1 className='text-black text-3xl font-semibold text-left ml-6 sm:text-center italic'>Recipe's List</h1>
                 </div>
 
                 <form className='flex mt-3 justify-between items-center mx-auto w-full border p-1 rounded-lg text-white bg-black max-w-[700px]' onSubmit={handleSubmit}>
@@ -49,8 +49,8 @@ function MenuList() {
                             required
                             type="text"
                             value={searchTerm}
-                            placeholder="Type Something Here"
-                            className="bg-transparent focus:outline-none"
+                            placeholder="Type Something Here..."
+                            className="bg-transparent focus:outline-none ml-2"
                             onChange={(event) => setSearchTerm(event.target.value)}
                         />
                     </div>
@@ -63,13 +63,14 @@ function MenuList() {
                     {isLoading ? (
                         <Spinner />
                     ) : recipes.length === 0 ? (
-                        <p>No recipes found. Try a different search term.</p>
-                    ) : (
+                        <div className="col-span-full">
+                            <p className="text-left sm:text-center mt-3">No recipes found. Try a different search term.</p>
+                        </div>) : (
                         recipes.map((recipe) => (
                             <Link to={`/recipes/${recipe.id}`} key={recipe.id}>
                                 <div className="recipe-item">
                                     <img src={recipe.image} alt={recipe.title} />
-                                    <p className='text-center text-xl font-bold'>{recipe.title}</p>
+                                    <p className='text-xl font-bold'>{recipe.title}</p>
                                 </div>
                             </Link>
                         ))

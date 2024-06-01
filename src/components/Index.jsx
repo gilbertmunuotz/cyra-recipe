@@ -1,8 +1,8 @@
 import React from 'react'
-import Body from '../components/Body';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import MenuList from '../components/MenuList';
+import Body from './Body';
+import Navbar from './Navbar';
+import Footer from './Footer';
+import MenuList from './MenuList';
 
 function Index() {
     return (
