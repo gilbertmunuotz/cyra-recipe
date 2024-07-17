@@ -7,7 +7,7 @@ function Spinner({ loading }) {
     };
     return (
         loading && (
-            <div className="fixed inset-0 flex justify-center items-center bg-white bg-opacity-80 z-50">
+            <div className="fixed inset-0 flex justify-center items-center bg-white bg-opacity-100 z-50">
                 <ScaleLoader
                     loading={loading}
                     size={150}
