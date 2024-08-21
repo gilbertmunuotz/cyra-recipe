@@ -1,8 +1,8 @@
-import Index from "./components/Index";
+import Index from "./pages/Index";
 import NotFound from "./components/NotFound";
+import MenuDetails from './pages/MenuDetails';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import MenuDetails from './components/MenuDetails';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([

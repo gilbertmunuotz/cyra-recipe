@@ -1,4 +1,3 @@
-import React from 'react'
 import Body from './Body';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -15,4 +14,4 @@ function Index() {
     )
 }
 
-export default Index
+export default Index;

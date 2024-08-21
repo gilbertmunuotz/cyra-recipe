@@ -1,5 +1,5 @@
 import Footer from "./Footer";
-import Spinner from './Spinner'
+import Spinner from '../components/Spinner'
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -78,9 +78,9 @@ function MenuDetails() {
                                 </ul>
                             </div>
 
-                            <div className="mx-6 sm:col-span-2 flex justify-between items-center mt-4">
-                                <p>Number Of Servings: {recipe.servings}</p>
-                                <p>Average Time: {recipe.readyInMinutes} Minutes</p>
+                            <div className="block mx-6 sm:col-span-2 sm:flex justify-between items-center mt-4">
+                                <p className="font-medium">Number Of Servings: {recipe.servings} Sets</p>
+                                <p className="font-medium">Average Time: {recipe.readyInMinutes} Minutes</p>
                             </div>
 
                         </div>
